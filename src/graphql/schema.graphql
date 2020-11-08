@@ -1,25 +1,95 @@
-type User {
+type Recipe {
   _id: ID
-  firstName: String
-  lastName: String
-  email: String
+  username: String
+  likes: Int!
+  createdDate: String!
+  instructions: String!
+  description: String!
+  category: String!
+  imageUrl: String!
+  name: String!
 }
 
-type Query {
-  currentUser: User
+type User {
+  _id: ID
+  firstName: String!
+  lastName: String!
+  email: String!
+  joinDate: Int!
+  favorites: [Recipe!]!
 }
 
 type AuthPayload {
   user: User
 }
 
+input LoginInput {
+  email: String!
+  password: String!
+}
+
+input SiginupInput {
+  firstName: String!
+  lastName: String!
+  email: String!
+  password: String!
+  username: String!
+}
+
+input RecipeInput {
+  _id: ID!
+}
+
+input UserRecipesInput {
+  email: String!
+}
+
+input AddRecipeInput {
+  name: String!
+  description: String!
+  category: String!
+  instructions: String!
+  username: String
+  imageUrl: String!
+}
+
+input DeleteUserRecipeInput {
+  _id: ID!
+}
+
+input LikeRecipeInput {
+  _id: ID!
+  username: String!
+}
+
+input UnlikeRecipeInput {
+  _id: ID!
+  username: String!
+}
+
+input UpdateUserRecipeInput {
+  _id: ID!
+  name: String!
+  description: String!
+  category: String!
+  instructions: String!
+  username: String
+  imageUrl: String!
+}
+
+type Query {
+  user: User
+  recipe(input: RecipeInput!): Recipe
+  recipes: [Recipe!]!
+  userRecipes(input: UserRecipesInput!): [Recipe!]!
+}
+
 type Mutation {
-  login(email: String!, password: String!): AuthPayload
-  signup(
-    firstName: String!
-    lastName: String!
-    email: String!
-    password: String!
-    username: String!
-  ): AuthPayload
+  login(input: LoginInput!): AuthPayload
+  signup(input: SiginupInput!): AuthPayload!
+  addRecipe(input: AddRecipeInput!): Recipe!
+  deleteUserRecipe(input: DeleteUserRecipeInput!): Recipe
+  likeRecipe(input: LikeRecipeInput!): Recipe!
+  unlikeRecipe(input: UnlikeRecipeInput!): Recipe!
+  updateUserRecipe(input: UpdateUserRecipeInput!): Recipe!
 }

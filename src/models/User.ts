@@ -9,6 +9,14 @@ import bcrypt from 'bcrypt';
 import { RecipeDocument } from './Recipe';
 
 const schema: SchemaDefinition = {
+  firstname: {
+    type: String,
+    required: true,
+  },
+  lastname: {
+    type: String,
+    required: true,
+  },
   username: {
     type: String,
     required: true,
@@ -21,6 +29,7 @@ const schema: SchemaDefinition = {
   email: {
     type: String,
     required: true,
+    unique: true,
   },
   joinDate: {
     type: Date,
@@ -33,11 +42,13 @@ const schema: SchemaDefinition = {
 };
 
 export interface User {
+  firstname: string;
+  lastname: string;
   username: string;
   password: string;
   email: string;
   joinDate: Date;
-  favorites: Schema.Types.ObjectId | Record<string, unknown>;
+  favorites: Schema.Types.ObjectId[];
 }
 
 // Not directly exported because it is not recommanded to
@@ -47,7 +58,7 @@ interface UserBaseDocument extends User, Document {}
 
 // Export this for strong typing
 export interface UserDocument extends UserBaseDocument {
-  favorites: RecipeDocument['_id'];
+  favorites: Array<RecipeDocument['_id']>;
 }
 
 // For model
@@ -58,7 +69,6 @@ const collectionName: string = 'User';
 const UserSchema: mongoose.Schema = new mongoose.Schema(schema);
 
 UserSchema.pre<UserDocument>('save', async function (next: HookNextFunction) {
-  console.log('start');
   if (!this.isModified('password')) {
     return next();
   }
@@ -73,7 +83,6 @@ UserSchema.pre<UserDocument>('save', async function (next: HookNextFunction) {
         return next(err);
       }
 
-      console.log('pass', hash);
       this.password = hash;
       next();
     });

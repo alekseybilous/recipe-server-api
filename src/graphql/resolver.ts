@@ -2,14 +2,53 @@ import { IResolvers } from 'graphql-tools';
 import { IGetContext } from '../context';
 import { AuthenticateReturn } from 'graphql-passport/lib/types';
 import { UserDocument } from '../models/User';
+import {
+  LoginInput,
+  MutationAddRecipeArgs,
+  MutationDeleteUserRecipeArgs,
+  MutationLikeRecipeArgs,
+  MutationLoginArgs,
+  MutationSignupArgs,
+  MutationUnlikeRecipeArgs,
+  MutationUpdateUserRecipeArgs,
+  QueryRecipeArgs,
+  QueryUserRecipesArgs,
+  SiginupInput,
+  UpdateUserRecipeInput,
+} from '../generated/graphql';
+import { RecipeDocument } from '../models/Recipe';
 
 const resolvers: IResolvers = {
   Query: {
-    currentUser: async (parent, args, context: IGetContext) =>
+    user: async (parent, args, context: IGetContext): Promise<UserDocument> =>
       await context.getUser(),
+    recipe: async (
+      parent,
+      args: QueryRecipeArgs,
+      context: IGetContext
+    ): Promise<RecipeDocument | null> =>
+      await context.RecipeModel.findById(args.input._id),
+    recipes: async (
+      parent,
+      args,
+      context: IGetContext
+    ): Promise<RecipeDocument[]> => await context.RecipeModel.find(),
+    userRecipes: async (
+      parent,
+      args: QueryUserRecipesArgs,
+      context: IGetContext
+    ): Promise<RecipeDocument[]> =>
+      await context.RecipeModel.find({ email: args.input.email }).sort({
+        createdDate: 'desc',
+      }),
   },
   Mutation: {
-    login: async (parent, { email, password }, context: IGetContext) => {
+    login: async (
+      parent,
+      args: MutationLoginArgs,
+      context: IGetContext
+    ): Promise<{ user?: UserDocument }> => {
+      const { email, password }: LoginInput = args.input;
       const {
         user,
       }: AuthenticateReturn<UserDocument> = await context.authenticate(
@@ -26,9 +65,17 @@ const resolvers: IResolvers = {
     },
     signup: async (
       parent,
-      { firstName, lastName, email, password, username },
+      args: MutationSignupArgs,
       context: IGetContext
-    ) => {
+    ): Promise<{ user: UserDocument }> => {
+      const {
+        firstName,
+        lastName,
+        email,
+        password,
+        username,
+      }: SiginupInput = args.input;
+
       const existingUsers: UserDocument[] = await context.UserModel.find();
 
       const userWithEmailAlreadyExists: boolean = !!existingUsers.find(
@@ -50,6 +97,65 @@ const resolvers: IResolvers = {
       await context.login(newUser);
 
       return { user: newUser };
+    },
+    addRecipe: async (
+      parent,
+      args: MutationAddRecipeArgs,
+      context: IGetContext
+    ): Promise<RecipeDocument> => new context.RecipeModel(args.input).save(),
+    deleteUserRecipe: async (
+      parent,
+      args: MutationDeleteUserRecipeArgs,
+      context: IGetContext
+    ): Promise<RecipeDocument | null> =>
+      await context.RecipeModel.findOneAndRemove({ _id: args.input._id }),
+    likeRecipe: async (
+      parent,
+      args: MutationLikeRecipeArgs,
+      context: IGetContext
+    ): Promise<RecipeDocument | null> => {
+      const recipe: RecipeDocument | null = await context.RecipeModel.findOneAndUpdate(
+        { _id: args.input._id },
+        { $inc: { likes: 1 } }
+      );
+
+      await context.UserModel.findOneAndUpdate(
+        { username: args.input.username },
+        { $addToSet: { favorites: args.input._id } }
+      );
+
+      return recipe;
+    },
+    unlikeRecipe: async (
+      parent,
+      args: MutationUnlikeRecipeArgs,
+      context: IGetContext
+    ): Promise<RecipeDocument | null> => {
+      const recipe: RecipeDocument | null = await context.RecipeModel.findOneAndUpdate(
+        { _id: args.input._id },
+        { $inc: { likes: -1 } }
+      );
+
+      await context.UserModel.findOneAndUpdate(
+        { username: args.input.username },
+        // @ts-ignore
+        { $pull: { favorites: args.input._id } }
+      );
+
+      return recipe;
+    },
+    updateUserRecipe: async (
+      parent,
+      args: MutationUpdateUserRecipeArgs,
+      context: IGetContext
+    ): Promise<RecipeDocument | null> => {
+      const { _id, ...values }: UpdateUserRecipeInput = args.input;
+
+      return await context.RecipeModel.findOneAndUpdate(
+        { _id },
+        { $set: { ...values, username: values.username || undefined } },
+        { new: true }
+      );
     },
   },
 };

@@ -50,7 +50,7 @@ interface RecipeBaseDocument extends Recipe, Document {}
 
 export interface RecipeDocument extends RecipeBaseDocument {}
 
-export interface RecipeModel extends Model<RecipeDocument> {}
+export interface IRecipeModel extends Model<RecipeDocument> {}
 
 const collectionName: string = 'Recipe';
 
@@ -60,7 +60,7 @@ RecipeSchema.index({
   '$**': 'text',
 });
 
-export default mongoose.model<RecipeDocument, RecipeModel>(
+export default mongoose.model<RecipeDocument, IRecipeModel>(
   collectionName,
   RecipeSchema
 );
