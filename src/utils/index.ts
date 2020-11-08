@@ -1,2 +1,2 @@
-export {mongoConnection} from './mongoConnection'
-export {initPassport} from './initPassport'
+export { mongoConnection } from './mongoConnection';
+export { initPassport } from './initPassport';

@@ -23,8 +23,3 @@ type Mutation {
     username: String!
   ): AuthPayload
 }
-
-schema  {
-  query: Query
-  mutation: Mutation
-}

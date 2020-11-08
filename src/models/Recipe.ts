@@ -60,4 +60,7 @@ RecipeSchema.index({
   '$**': 'text',
 });
 
-export default mongoose.model<RecipeDocument, RecipeModel>(collectionName, RecipeSchema);
+export default mongoose.model<RecipeDocument, RecipeModel>(
+  collectionName,
+  RecipeSchema
+);

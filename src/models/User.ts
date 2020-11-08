@@ -1,4 +1,10 @@
-import mongoose, { HookNextFunction, Model, Schema, SchemaDefinition, Document } from 'mongoose';
+import mongoose, {
+  HookNextFunction,
+  Model,
+  Schema,
+  SchemaDefinition,
+  Document,
+} from 'mongoose';
 import bcrypt from 'bcrypt';
 import { RecipeDocument } from './Recipe';
 
@@ -74,4 +80,7 @@ UserSchema.pre<UserDocument>('save', async function (next: HookNextFunction) {
   });
 });
 
-export default mongoose.model<UserDocument, IUserModel>(collectionName, UserSchema);
+export default mongoose.model<UserDocument, IUserModel>(
+  collectionName,
+  UserSchema
+);

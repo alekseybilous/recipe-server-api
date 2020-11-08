@@ -8,10 +8,9 @@ export interface IGetContext extends Context<UserDocument> {
   UserModel: IUserModel;
 }
 
-export const getContext: ContextFunction<ExpressContext, Context<UserDocument>> | Context<UserDocument> = ({
-  req,
-  res,
-}: ExpressContext): IGetContext => ({
+export const getContext:
+  | ContextFunction<ExpressContext, Context<UserDocument>>
+  | Context<UserDocument> = ({ req, res }: ExpressContext): IGetContext => ({
   ...buildContext<UserDocument>({ req, res }),
   UserModel,
 });

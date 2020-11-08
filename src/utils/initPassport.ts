@@ -8,17 +8,21 @@ export interface IInitPassport {
 
 export const initPassport = ({ UserModel }: IInitPassport): void => {
   passport.use(
-    new GraphQLLocalStrategy(async (email: unknown, password: unknown, done: any) => {
-      const users: UserDocument[] = await UserModel.find();
+    new GraphQLLocalStrategy(
+      async (email: unknown, password: unknown, done: any) => {
+        const users: UserDocument[] = await UserModel.find();
 
-      const matchingUser: UserDocument | undefined = users.find((user: UserDocument) => {
-        return email === user.email && password === user.password;
-      });
+        const matchingUser: UserDocument | undefined = users.find(
+          (user: UserDocument) => {
+            return email === user.email && password === user.password;
+          }
+        );
 
-      const error = matchingUser ? null : new Error('no matching user');
+        const error = matchingUser ? null : new Error('no matching user');
 
-      done(error, matchingUser);
-    })
+        done(error, matchingUser);
+      }
+    )
   );
 
   passport.serializeUser((user: UserDocument, done) => {
@@ -28,7 +32,9 @@ export const initPassport = ({ UserModel }: IInitPassport): void => {
   passport.deserializeUser(async (id: UserDocument['_id'], done) => {
     const users: UserDocument[] = await UserModel.find();
 
-    const matchingUser: UserDocument | undefined = users.find((user: UserDocument) => user._id === id);
+    const matchingUser: UserDocument | undefined = users.find(
+      (user: UserDocument) => user._id === id
+    );
 
     done(null, matchingUser);
   });
