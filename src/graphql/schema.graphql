@@ -59,12 +59,12 @@ input DeleteUserRecipeInput {
 
 input LikeRecipeInput {
   _id: ID!
-  username: String!
+  email: String!
 }
 
 input UnlikeRecipeInput {
   _id: ID!
-  username: String!
+  email: String!
 }
 
 input UpdateUserRecipeInput {

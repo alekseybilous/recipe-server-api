@@ -80,12 +80,12 @@ export type DeleteUserRecipeInput = {
 
 export type LikeRecipeInput = {
   _id: Scalars['ID'];
-  username: Scalars['String'];
+  email: Scalars['String'];
 };
 
 export type UnlikeRecipeInput = {
   _id: Scalars['ID'];
-  username: Scalars['String'];
+  email: Scalars['String'];
 };
 
 export type UpdateUserRecipeInput = {

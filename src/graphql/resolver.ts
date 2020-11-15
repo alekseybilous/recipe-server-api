@@ -120,7 +120,7 @@ const resolvers: IResolvers = {
       );
 
       await context.UserModel.findOneAndUpdate(
-        { username: args.input.username },
+        { email: args.input.email },
         { $addToSet: { favorites: args.input._id } }
       );
 
@@ -137,7 +137,7 @@ const resolvers: IResolvers = {
       );
 
       await context.UserModel.findOneAndUpdate(
-        { username: args.input.username },
+        { email: args.input.email },
         // @ts-ignore
         { $pull: { favorites: args.input._id } }
       );

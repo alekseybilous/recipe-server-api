@@ -626,7 +626,7 @@
             "defaultValue": null
           },
           {
-            "name": "username",
+            "name": "email",
             "description": null,
             "type": {
               "kind": "NON_NULL",
@@ -665,7 +665,7 @@
             "defaultValue": null
           },
           {
-            "name": "username",
+            "name": "email",
             "description": null,
             "type": {
               "kind": "NON_NULL",
