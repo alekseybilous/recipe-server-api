@@ -19,14 +19,13 @@ export type Scalars = {
 export type Recipe = {
   __typename?: 'Recipe';
   _id?: Maybe<Scalars['ID']>;
-  username?: Maybe<Scalars['String']>;
   likes: Scalars['Int'];
   createdDate: Scalars['String'];
   instructions: Scalars['String'];
   description: Scalars['String'];
   category: Scalars['String'];
   imageUrl: Scalars['String'];
-  name: Scalars['String'];
+  email: Scalars['String'];
 };
 
 export type User = {
@@ -54,7 +53,6 @@ export type SiginupInput = {
   lastName: Scalars['String'];
   email: Scalars['String'];
   password: Scalars['String'];
-  username: Scalars['String'];
 };
 
 export type RecipeInput = {
@@ -70,7 +68,7 @@ export type AddRecipeInput = {
   description: Scalars['String'];
   category: Scalars['String'];
   instructions: Scalars['String'];
-  username?: Maybe<Scalars['String']>;
+  email?: Maybe<Scalars['String']>;
   imageUrl: Scalars['String'];
 };
 
@@ -94,7 +92,7 @@ export type UpdateUserRecipeInput = {
   description: Scalars['String'];
   category: Scalars['String'];
   instructions: Scalars['String'];
-  username?: Maybe<Scalars['String']>;
+  email?: Maybe<Scalars['String']>;
   imageUrl: Scalars['String'];
 };
 
@@ -271,8 +269,8 @@ export type DirectiveResolverFn<
 export type ResolversTypes = {
   Recipe: ResolverTypeWrapper<Recipe>;
   ID: ResolverTypeWrapper<Scalars['ID']>;
-  String: ResolverTypeWrapper<Scalars['String']>;
   Int: ResolverTypeWrapper<Scalars['Int']>;
+  String: ResolverTypeWrapper<Scalars['String']>;
   User: ResolverTypeWrapper<User>;
   AuthPayload: ResolverTypeWrapper<AuthPayload>;
   LoginInput: LoginInput;
@@ -293,8 +291,8 @@ export type ResolversTypes = {
 export type ResolversParentTypes = {
   Recipe: Recipe;
   ID: Scalars['ID'];
-  String: Scalars['String'];
   Int: Scalars['Int'];
+  String: Scalars['String'];
   User: User;
   AuthPayload: AuthPayload;
   LoginInput: LoginInput;
@@ -316,14 +314,13 @@ export type RecipeResolvers<
   ParentType extends ResolversParentTypes['Recipe'] = ResolversParentTypes['Recipe']
 > = {
   _id?: Resolver<Maybe<ResolversTypes['ID']>, ParentType, ContextType>;
-  username?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   likes?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   createdDate?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   instructions?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   description?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   category?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   imageUrl?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  email?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 

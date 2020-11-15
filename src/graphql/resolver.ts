@@ -68,13 +68,7 @@ const resolvers: IResolvers = {
       args: MutationSignupArgs,
       context: IGetContext
     ): Promise<{ user: UserDocument }> => {
-      const {
-        firstName,
-        lastName,
-        email,
-        password,
-        username,
-      }: SiginupInput = args.input;
+      const { firstName, lastName, email, password }: SiginupInput = args.input;
 
       const existingUsers: UserDocument[] = await context.UserModel.find();
 
@@ -91,7 +85,6 @@ const resolvers: IResolvers = {
         lastName,
         email,
         password,
-        username,
       }).save();
 
       await context.login(newUser);
@@ -153,7 +146,7 @@ const resolvers: IResolvers = {
 
       return await context.RecipeModel.findOneAndUpdate(
         { _id },
-        { $set: { ...values, username: values.username || undefined } },
+        { $set: { ...values, email: values.email || undefined } },
         { new: true }
       );
     },

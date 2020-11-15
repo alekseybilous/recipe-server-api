@@ -29,7 +29,7 @@ const schema: SchemaDefinition = {
     type: Number,
     default: 0,
   },
-  username: {
+  email: {
     type: String,
     required: true,
   },
@@ -43,7 +43,7 @@ export interface Recipe {
   description: string;
   category: string;
   imageUrl: string;
-  name: string;
+  email: string;
 }
 
 interface RecipeBaseDocument extends Recipe, Document {}

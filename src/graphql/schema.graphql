@@ -1,13 +1,12 @@
 type Recipe {
   _id: ID
-  username: String
   likes: Int!
   createdDate: String!
   instructions: String!
   description: String!
   category: String!
   imageUrl: String!
-  name: String!
+  email: String!
 }
 
 type User {
@@ -33,7 +32,6 @@ input SiginupInput {
   lastName: String!
   email: String!
   password: String!
-  username: String!
 }
 
 input RecipeInput {
@@ -49,7 +47,7 @@ input AddRecipeInput {
   description: String!
   category: String!
   instructions: String!
-  username: String
+  email: String
   imageUrl: String!
 }
 
@@ -73,7 +71,7 @@ input UpdateUserRecipeInput {
   description: String!
   category: String!
   instructions: String!
-  username: String
+  email: String
   imageUrl: String!
 }
 
